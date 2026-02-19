@@ -40,7 +40,17 @@ export const handleGithubWebhook = async (req: Request, res: Response): Promise<
       });
 
       // 3. Send WhatsApp Notification
-      const message = `🔀 *PR Mergeado: ${repoName}* 👤 Autor: ${author} ✅ Mergeado por: ${mergedBy} 📄 Título: ${title} ➕ ${additions} líneas añadidas  ➖ ${deletions} eliminadas 📝 Resumen: ${summary} 🔗 ${pr.html_url}`;
+      const message = `🔀 *PR Mergeado: ${repoName}*
+
+*📄 Título:* ${title}
+*👤 Autor:* ${author}
+*✅ Mergeado por:* ${mergedBy}
+*📊 Cambios:* ➕ ${additions} líneas añadidas | ➖ ${deletions} eliminadas
+
+*📝 Resumen:*
+${summary}
+
+🔗 ${pr.html_url}`;
       await sendWhatsAppNotification(message);
 
       console.log('Processed successfully.');
