@@ -11,7 +11,7 @@ export async function summarizePR(title: string, body: string): Promise<string> 
     return `Placeholder summary: ${title}`;
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-3.1-pro-preview" });
 
   const prompt = `
     You are a technical translator and summarizer.

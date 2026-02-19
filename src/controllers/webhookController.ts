@@ -29,7 +29,7 @@ export const handleGithubWebhook = async (req: Request, res: Response): Promise<
 
       // 2. Persist to DB
       insertPrEvent({
-        pr_id: pr.id,
+        pr_id: pr.number,
         repo_name: repoName,
         author: author,
         title: title,
