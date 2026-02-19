@@ -1,17 +1,17 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY || '',
+});
 
 export async function summarizePR(title: string, body: string): Promise<string> {
   if (!process.env.GEMINI_API_KEY) {
     console.warn("GEMINI_API_KEY is not set. Returning placeholder summary.");
     return `Placeholder summary: ${title}`;
   }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-3.1-pro-preview" });
 
   const prompt = `
     You are a technical translator and summarizer.
@@ -25,9 +25,27 @@ export async function summarizePR(title: string, body: string): Promise<string> 
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text().trim();
+    const tools = [
+      {
+        googleSearch: {}
+      },
+    ];
+    const config = {
+      thinkingConfig: {
+        thinkingLevel: ThinkingLevel.HIGH,
+      },
+      tools,
+    };
+    const model = 'gemini-3.1-pro-preview';
+    
+    // We can use generateContent to get the full response.
+    const response = await ai.models.generateContent({
+      model,
+      config,
+      contents: prompt,
+    });
+    
+    return response.text?.trim() || `Error generating summary. Title: ${title}`;
   } catch (error) {
     console.error("Error generating summary with Gemini:", error);
     return `Error generating summary. Title: ${title}`;
