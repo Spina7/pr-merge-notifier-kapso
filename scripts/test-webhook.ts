@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8743;
 const URL = `http://localhost:${PORT}/webhook/github`;
 
 const payload = {

@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8743:8743"
+    environment:
+      - PORT=8743
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - KAPSO_API_KEY=${KAPSO_API_KEY}
+      - WHATSAPP_PHONE_NUMBER_ID=${WHATSAPP_PHONE_NUMBER_ID}
+      - TEAM_PHONES=${TEAM_PHONES}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

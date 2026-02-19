@@ -1,0 +1,19 @@
+name: Notify PR Merge to Microservice
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Webhook Payload
+        run: |
+          curl -X POST 
+            -H "Content-Type: application/json" 
+            -d '${{ toJSON(github.event) }}' 
+            ${{ secrets.PR_NOTIFIER_WEBHOOK_URL }}
