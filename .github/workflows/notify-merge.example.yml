@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Send Webhook Payload
         run: |
-          curl -X POST 
-            -H "Content-Type: application/json" 
-            -d '${{ toJSON(github.event) }}' 
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '${{ toJSON(github.event) }}' \
             ${{ secrets.PR_NOTIFIER_WEBHOOK_URL }}

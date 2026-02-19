@@ -19,6 +19,9 @@ export const handleGithubWebhook = async (req: Request, res: Response): Promise<
       const pr = payload.pull_request;
       const repoName = payload.repository.full_name;
       const author = pr.user.login;
+      const mergedBy = pr.merged_by?.login ?? author;
+      const additions = pr.additions ?? 0;
+      const deletions = pr.deletions ?? 0;
       const title = pr.title;
       const body = pr.body || '';
 
@@ -37,11 +40,7 @@ export const handleGithubWebhook = async (req: Request, res: Response): Promise<
       });
 
       // 3. Send WhatsApp Notification
-      const message = `🚀 *PR Merged: ${repoName}*
-👤 Author: ${author}
-📄 Title: ${title}
-📝 Summary: ${summary}
-🔗 ${pr.html_url}`;
+      const message = `🔀 *PR Mergeado: ${repoName}* 👤 Autor: ${author} ✅ Mergeado por: ${mergedBy} 📄 Título: ${title} ➕ ${additions} líneas añadidas  ➖ ${deletions} eliminadas 📝 Resumen: ${summary} 🔗 ${pr.html_url}`;
       await sendWhatsAppNotification(message);
 
       console.log('Processed successfully.');

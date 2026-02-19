@@ -7,9 +7,14 @@ export interface GitHubPREvent {
     body: string | null;
     merged: boolean;
     html_url: string;
+    additions: number;
+    deletions: number;
     user: {
       login: string;
     };
+    merged_by: {
+      login: string;
+    } | null;
     head: {
       repo: {
         name: string;
