@@ -1,3 +1,4 @@
+# .github/workflows/notify-merge.yml
 name: Notify PR Merge to Microservice
 
 on:
@@ -12,8 +13,10 @@ jobs:
 
     steps:
       - name: Send Webhook Payload
+        env:
+          PAYLOAD: ${{ toJSON(github.event) }}
         run: |
           curl -X POST \
             -H "Content-Type: application/json" \
-            -d '${{ toJSON(github.event) }}' \
+            -d "$PAYLOAD" \
             ${{ secrets.PR_NOTIFIER_WEBHOOK_URL }}
